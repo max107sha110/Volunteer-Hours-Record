@@ -1,0 +1,1148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6ef">
+  <meta name="description" content="Create a printable record of nonprofit volunteer service hours.">
+  <title>Volunteer service record</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #20342f;
+      --muted: #6d7a72;
+      --green: #245c48;
+      --green-dark: #194634;
+      --mint: #e4eee5;
+      --paper: #fffefa;
+      --line: #e3e7df;
+      --orange: #e9a45b;
+      --shadow: 0 24px 70px rgb(32 52 47 / 9%);
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 9% 12%, rgb(230 237 222 / 70%), transparent 29rem),
+        #f5f6ef;
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    .page-shell {
+      width: min(1120px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 28px 0 52px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+
+    .brand {
+      display: inline-flex;
+      gap: 11px;
+      align-items: center;
+      color: var(--ink);
+      font-size: 19px;
+      font-weight: 750;
+      letter-spacing: -.04em;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      color: white;
+      background: var(--green);
+      border-radius: 12px;
+      place-items: center;
+    }
+
+    .topbar-note {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .intro {
+      max-width: 650px;
+      margin: 0 auto 30px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 7px;
+      height: 7px;
+      background: var(--orange);
+      border-radius: 50%;
+      content: "";
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(36px, 5vw, 52px);
+      font-weight: 500;
+      letter-spacing: -.045em;
+      line-height: 1.08;
+    }
+
+    .intro p {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .app-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid rgb(32 52 47 / 6%);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .form-panel { padding: 36px 40px 32px; }
+
+    .section-heading {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .section-number {
+      display: grid;
+      flex: 0 0 34px;
+      height: 34px;
+      color: var(--green);
+      background: var(--mint);
+      border-radius: 11px;
+      font-size: 13px;
+      font-weight: 750;
+      place-items: center;
+    }
+
+    h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 23px;
+      font-weight: 500;
+      letter-spacing: -.025em;
+    }
+
+    .section-heading p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 18px;
+    }
+
+    .field { min-width: 0; }
+    .field-wide { grid-column: 1 / -1; }
+
+    label, .field-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .required { color: #b45c37; }
+
+    input, select, textarea {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 14px;
+      color: var(--ink);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color .16s ease, box-shadow .16s ease;
+    }
+
+    textarea {
+      min-height: 110px;
+      padding: 12px 14px;
+      resize: vertical;
+    }
+
+    input::placeholder, textarea::placeholder { color: #a4ada5; }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #6e9a82;
+      box-shadow: 0 0 0 3px rgb(81 137 105 / 13%);
+    }
+
+    .signature-pad {
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+
+    .signature-pad:focus-within {
+      border-color: #6e9a82;
+      box-shadow: 0 0 0 3px rgb(81 137 105 / 13%);
+    }
+
+    .signature-pad[aria-invalid="true"] { border-color: #b45c37; }
+
+    #signature-canvas {
+      display: block;
+      width: 100%;
+      height: 150px;
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    .signature-tools {
+      display: flex;
+      justify-content: flex-end;
+      padding: 8px 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .signature-tools button {
+      padding: 4px 8px;
+      color: var(--green);
+      background: transparent;
+      border: 0;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .help-text {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .form-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 28px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+    }
+
+    .privacy-note {
+      max-width: 255px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .primary-button, .secondary-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: background .16s ease, transform .16s ease;
+    }
+
+    .primary-button {
+      color: white;
+      background: var(--green);
+      border: 1px solid var(--green);
+    }
+
+    .primary-button:hover { background: var(--green-dark); }
+    .primary-button:active, .secondary-button:active { transform: translateY(1px); }
+    .primary-button:disabled { cursor: not-allowed; opacity: .55; }
+
+    .side-panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100%;
+      padding: 34px 29px;
+      overflow: hidden;
+      background: #eaf0e7;
+    }
+
+    .side-panel::after {
+      position: absolute;
+      right: -54px;
+      bottom: 76px;
+      width: 200px;
+      height: 200px;
+      border: 1px solid rgb(36 92 72 / 10%);
+      border-radius: 50%;
+      box-shadow: 0 0 0 22px rgb(36 92 72 / 3%), 0 0 0 48px rgb(36 92 72 / 3%);
+      content: "";
+      pointer-events: none;
+    }
+
+    .side-label {
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .quote {
+      position: relative;
+      z-index: 1;
+      margin: 36px 0 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 26px;
+      letter-spacing: -.035em;
+      line-height: 1.3;
+    }
+
+    .quote-mark {
+      display: block;
+      height: 33px;
+      color: #85a58b;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 54px;
+      line-height: 1;
+    }
+
+    .side-bottom {
+      position: relative;
+      z-index: 1;
+      margin-top: 38px;
+    }
+
+    .side-bottom svg { display: block; width: 100%; height: auto; }
+
+    .side-caption {
+      margin: 15px 0 0;
+      color: #5f7467;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .result {
+      max-width: 700px;
+      margin: 24px auto 0;
+      padding: 28px 32px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 12px 35px rgb(32 52 47 / 6%);
+    }
+
+    .result[hidden] { display: none; }
+
+    .result-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .result-kicker {
+      margin: 0 0 6px;
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .result h2 { font-size: 25px; }
+    .result-actions { display: flex; flex-wrap: wrap; gap: 9px; }
+
+    .secondary-button {
+      min-height: 38px;
+      padding: 0 13px;
+      color: var(--green);
+      background: white;
+      border: 1px solid var(--line);
+      font-size: 12px;
+    }
+
+    .secondary-button:hover { background: #f3f6f1; }
+
+    .record-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 26px;
+      padding: 21px 0;
+    }
+
+    .record-item span {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .record-item strong {
+      overflow-wrap: anywhere;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .signature-item strong {
+      font-family: "Segoe Script", "Bradley Hand", cursive;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .signature-image {
+      display: block;
+      width: min(260px, 100%);
+      height: 76px;
+      object-fit: contain;
+      object-position: left center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .history-panel {
+      max-width: 900px;
+      margin: 24px auto 0;
+      padding: 28px 32px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 12px 35px rgb(32 52 47 / 6%);
+    }
+
+    .history-panel[hidden] { display: none; }
+    .history-panel h2 { font-size: 24px; }
+    .history-summary { margin: 7px 0 18px; color: var(--muted); font-size: 12px; }
+    .history-lookup { margin-top: 8px; }
+    .history-scroll { overflow-x: auto; }
+    .history-table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
+    .history-table th, .history-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+    .history-table th { color: var(--muted); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+    .history-table td { overflow-wrap: anywhere; }
+    .history-signature { display: block; width: 110px; height: 42px; object-fit: contain; object-position: left center; }
+    .history-actions { display: flex; justify-content: flex-end; margin-top: 16px; }
+
+    .result-footnote {
+      margin: 0;
+      padding-top: 15px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 760px) {
+      .page-shell { width: min(600px, calc(100% - 32px)); padding-top: 20px; }
+      .topbar { margin-bottom: 36px; }
+      .topbar-note { display: none; }
+      .app-card { grid-template-columns: 1fr; }
+      .form-panel { padding: 30px 26px; }
+      .side-panel { min-height: 210px; padding: 24px 26px; }
+      .side-panel::after { right: -25px; bottom: -105px; }
+      .quote { max-width: 380px; margin-top: 15px; font-size: 22px; }
+      .quote-mark { display: none; }
+      .side-bottom { display: none; }
+      .intro p { font-size: 14px; }
+    }
+
+    @media (max-width: 480px) {
+      .fields { grid-template-columns: 1fr; gap: 16px; }
+      .field-wide { grid-column: auto; }
+      .form-panel { padding: 25px 20px; }
+      .form-footer { align-items: stretch; flex-direction: column; }
+      .privacy-note { max-width: none; }
+      .form-footer .primary-button { width: 100%; }
+      .result { padding: 23px 20px; }
+      .history-panel { padding: 23px 20px; }
+      .result-top { flex-direction: column; }
+      .record-grid { gap: 16px; }
+    }
+
+    @media print {
+      @page { margin: 18mm; }
+      body { min-width: 0; background: white; }
+      .page-shell { width: 100%; padding: 0; }
+      .topbar, .intro, .app-card, .result-actions, .history-panel { display: none !important; }
+      .result {
+        display: block !important;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .result h2 { font-size: 28px; }
+      .record-grid { gap: 25px 35px; padding: 28px 0; }
+      .result-item strong { font-size: 16px; }
+      .result-footnote { color: #555; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Volunteer Service Record home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 20s-7.5-4.35-7.5-10.05A4.2 4.2 0 0 1 12 7.7a4.2 4.2 0 0 1 7.5 2.25C19.5 15.65 12 20 12 20Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8.5 12h2l1.2-2.2 1.5 4.2 1.1-2H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Volunteer Service Record
+      </a>
+    </header>
+
+    <section class="app-card" aria-label="Volunteer service details">
+      <div class="form-panel">
+        <div class="section-heading">
+          <span class="section-number" aria-hidden="true">01</span>
+          <div>
+            <h2>Service details</h2>
+            <p>Fill in the details to prepare a service record.</p>
+          </div>
+        </div>
+
+        <form id="hours-form">
+          <div class="fields">
+            <div class="field">
+              <label for="organization-name">Organization name <span class="required" aria-hidden="true">*</span></label>
+              <input id="organization-name" name="organizationName" type="text" value="Community Care Collective" required maxlength="120">
+            </div>
+            <div class="field">
+              <label for="representative-name">Representative name <span class="required" aria-hidden="true">*</span></label>
+              <input id="representative-name" name="representativeName" type="text" placeholder="e.g. Taylor Morgan" required maxlength="100">
+            </div>
+            <div class="field">
+              <label for="volunteer-name">Volunteer name <span class="required" aria-hidden="true">*</span></label>
+              <input id="volunteer-name" name="volunteerName" type="text" autocomplete="name" placeholder="e.g. Jordan Lee" required maxlength="100">
+              <button class="secondary-button history-lookup" id="view-history-button" type="button">View saved history</button>
+            </div>
+            <div class="field">
+              <label for="event-name">Event or activity <span class="required" aria-hidden="true">*</span></label>
+              <input id="event-name" name="eventName" type="text" placeholder="e.g. Community garden day" required maxlength="120">
+            </div>
+            <div class="field">
+              <label for="event-date">Date of service <span class="required" aria-hidden="true">*</span></label>
+              <input id="event-date" name="eventDate" type="date" required>
+            </div>
+            <div class="field">
+              <label for="service-location">Service location</label>
+              <input id="service-location" name="serviceLocation" type="text" placeholder="e.g. Eastside pantry, 18 Maple Ave" maxlength="150">
+            </div>
+            <div class="field">
+              <label for="hours">Number of hours <span class="required" aria-hidden="true">*</span></label>
+              <input id="hours" name="hours" type="number" inputmode="decimal" min="0.01" max="9999" step="0.01" placeholder="e.g. 3.5" required>
+              <span class="help-text">Enter hours as a number; decimals are supported.</span>
+            </div>
+            <div class="field field-wide">
+              <label for="service-notes">Impact notes</label>
+              <textarea id="service-notes" name="serviceNotes" placeholder="Summarize the support provided, outcomes, or key responsibilities."></textarea>
+            </div>
+            <div class="field field-wide">
+              <span class="field-label">Representative signature <span class="required" aria-hidden="true">*</span></span>
+              <div class="signature-pad" id="signature-pad" aria-invalid="false">
+                <canvas id="signature-canvas" role="img" tabindex="0" aria-label="Draw the representative's handwritten signature" aria-describedby="signature-help"></canvas>
+                <div class="signature-tools">
+                  <button id="clear-signature" type="button">Clear signature</button>
+                </div>
+              </div>
+              <span class="help-text" id="signature-help">Sign with a mouse, touch, or stylus. Your signature is included in the downloaded record.</span>
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <p class="privacy-note">Saved records stay in this browser and are not sent to a server. Download the Excel history to keep a backup.</p>
+            <button class="primary-button" type="submit">
+              Create service record
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4.5 10h11m0 0-4.5-4.5M15.5 10 11 14.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+      <aside class="side-panel" aria-hidden="true">
+        <p class="side-label">Volunteer service record</p>
+        <div class="side-bottom">
+          <svg viewBox="0 0 260 100" fill="none" aria-hidden="true">
+            <path d="M1 82c25-25 43-25 68 0s43 25 68 0 43-25 68 0 36 23 54 7" stroke="#92ad91" stroke-width="1.5"/>
+            <path d="M18 72c18-18 31-18 49 0s31 18 49 0 31-18 49 0 31 18 49 0" stroke="#b1c3a9" stroke-width="1.5"/>
+            <path d="M69 57c0-14 11-25 25-25s25 11 25 25M94 32V13m0 0c-12 0-20 8-20 19m20-19c12 0 20 8 20 19" stroke="#60866c" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M92 57v24m0-14c-11 0-17-6-17-15m17 24c11 0 17-6 17-15" stroke="#60866c" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="93" cy="8" r="3" fill="#e9a45b"/>
+          </svg>
+          <p class="side-caption">A record of time, care, and community.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="history-panel" id="history-panel" aria-labelledby="history-title" aria-live="polite" hidden>
+      <div class="result-top">
+        <div>
+          <h2 id="history-title">Volunteer service history</h2>
+          <p class="history-summary" id="history-summary"></p>
+        </div>
+      </div>
+      <div class="history-scroll">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Program / activity</th>
+              <th scope="col">Hours</th>
+              <th scope="col">Location</th>
+              <th scope="col">Verified by</th>
+              <th scope="col">Signature</th>
+            </tr>
+          </thead>
+          <tbody id="history-rows"></tbody>
+        </table>
+      </div>
+      <div class="history-actions">
+        <button class="primary-button" id="download-history-button" type="button">Download one-year history (.xlsx)</button>
+      </div>
+    </section>
+
+    <section class="result" id="result" aria-labelledby="result-title" aria-live="polite" hidden>
+      <div class="result-top">
+        <div>
+          <p class="result-kicker">Volunteer service confirmation</p>
+        </div>
+        <div class="result-actions">
+          <button class="secondary-button" id="edit-button" type="button">Edit details</button>
+          <button class="primary-button" id="print-button" type="button">
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M6 6V3.5h8V6m-8 8H4.5A1.5 1.5 0 0 1 3 12.5v-4A1.5 1.5 0 0 1 4.5 7h11A1.5 1.5 0 0 1 17 8.5v4a1.5 1.5 0 0 1-1.5 1.5H14m-8-3h8v6H6v-6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <circle cx="14.5" cy="9.5" r=".75" fill="currentColor"/>
+            </svg>
+            Print record
+          </button>
+        </div>
+      </div>
+      <div class="record-grid">
+        <div class="record-item"><span>Organization</span><strong id="record-organization"></strong></div>
+        <div class="record-item"><span>Volunteer</span><strong id="record-volunteer"></strong></div>
+        <div class="record-item"><span>Program / activity</span><strong id="record-event"></strong></div>
+        <div class="record-item"><span>Service hours</span><strong id="record-hours"></strong></div>
+        <div class="record-item"><span>Date of service</span><strong id="record-date"></strong></div>
+        <div class="record-item"><span>Service location</span><strong id="record-location"></strong></div>
+        <div class="record-item"><span>Verified by</span><strong id="record-representative"></strong></div>
+        <div class="record-item"><span>Impact notes</span><strong id="record-notes"></strong></div>
+        <div class="record-item signature-item"><span>Representative signature</span><img class="signature-image" id="record-signature" alt="Handwritten representative signature"></div>
+      </div>
+      <p class="result-footnote">This record confirms the service details entered above. Retain it with your organization's records as appropriate.</p>
+    </section>
+    <p class="sr-only" id="form-status" role="status"></p>
+  </main>
+
+  <script>
+    const form = document.querySelector("#hours-form");
+    const result = document.querySelector("#result");
+    const formStatus = document.querySelector("#form-status");
+    const signatureCanvas = document.querySelector("#signature-canvas");
+    const signaturePad = document.querySelector("#signature-pad");
+    const signatureContext = signatureCanvas.getContext("2d");
+    let hasSignature = false;
+    let isDrawing = false;
+
+    signatureCanvas.width = Math.round(signatureCanvas.clientWidth * (window.devicePixelRatio || 1));
+    signatureCanvas.height = Math.round(signatureCanvas.clientHeight * (window.devicePixelRatio || 1));
+    signatureContext.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+    signatureContext.strokeStyle = "#20342f";
+    signatureContext.lineWidth = 2.4;
+    signatureContext.lineCap = "round";
+    signatureContext.lineJoin = "round";
+
+    function signaturePoint(event) {
+      const bounds = signatureCanvas.getBoundingClientRect();
+      return { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+    }
+
+    signatureCanvas.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      signatureCanvas.setPointerCapture(event.pointerId);
+      const point = signaturePoint(event);
+      isDrawing = true;
+      signatureContext.beginPath();
+      signatureContext.moveTo(point.x, point.y);
+      signatureContext.lineTo(point.x + 0.1, point.y + 0.1);
+      signatureContext.stroke();
+      hasSignature = true;
+      signaturePad.setAttribute("aria-invalid", "false");
+      signatureCanvas.setAttribute("aria-invalid", "false");
+    });
+
+    signatureCanvas.addEventListener("pointermove", (event) => {
+      if (!isDrawing) return;
+      const point = signaturePoint(event);
+      signatureContext.lineTo(point.x, point.y);
+      signatureContext.stroke();
+    });
+
+    function endSignature() {
+      isDrawing = false;
+    }
+
+    signatureCanvas.addEventListener("pointerup", endSignature);
+    signatureCanvas.addEventListener("pointercancel", endSignature);
+    signatureCanvas.addEventListener("lostpointercapture", endSignature);
+
+    document.querySelector("#clear-signature").addEventListener("click", () => {
+      signatureContext.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+      hasSignature = false;
+      signaturePad.setAttribute("aria-invalid", "false");
+      signatureCanvas.setAttribute("aria-invalid", "false");
+      formStatus.textContent = "Signature cleared.";
+    });
+
+    const recordFields = {
+      organizationName: document.querySelector("#record-organization"),
+      volunteerName: document.querySelector("#record-volunteer"),
+      representativeName: document.querySelector("#record-representative"),
+      eventName: document.querySelector("#record-event"),
+      eventDate: document.querySelector("#record-date"),
+      serviceLocation: document.querySelector("#record-location"),
+      hours: document.querySelector("#record-hours"),
+      serviceNotes: document.querySelector("#record-notes")
+    };
+
+    const formatHours = (value) => {
+      const hours = Number(value);
+      if (!Number.isFinite(hours)) return "0 hours";
+      const formatted = Number(hours.toFixed(2)).toString();
+      return `${formatted} ${hours === 1 ? "hour" : "hours"}`;
+    };
+
+    const safeText = (value) => value == null ? "—" : value.toString().trim() || "—";
+
+    const storageKey = "volunteer-service-records-v1";
+    const historyPanel = document.querySelector("#history-panel");
+    const historyRows = document.querySelector("#history-rows");
+    let savedRecords = [];
+    let visibleHistoryRecords = [];
+    let visibleHistoryName = "";
+
+    function readSavedRecords() {
+      const saved = localStorage.getItem(storageKey);
+      if (saved === null) return [];
+      const records = JSON.parse(saved);
+      if (!Array.isArray(records)) throw new Error("Saved volunteer records have an invalid format.");
+      const validRecords = records.every((record) =>
+        record &&
+        ["organizationName", "volunteerName", "representativeName", "eventName", "eventDate", "serviceLocation", "serviceNotes", "submittedAt"]
+          .every((field) => typeof record[field] === "string") &&
+        Number.isFinite(record.hours) &&
+        typeof record.signature === "string" &&
+        record.signature.startsWith("data:image/png;base64,")
+      );
+      if (!validRecords) throw new Error("Saved volunteer records are incomplete.");
+      return records;
+    }
+
+    function volunteerKey(name) {
+      return name.trim().replace(/\s+/g, " ").toLocaleLowerCase();
+    }
+
+    function dateValue(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function getHistoryDateRange(now = new Date()) {
+      const cutoffYear = now.getFullYear() - 1;
+      const lastDayOfCutoffMonth = new Date(cutoffYear, now.getMonth() + 1, 0).getDate();
+      const cutoff = new Date(cutoffYear, now.getMonth(), Math.min(now.getDate(), lastDayOfCutoffMonth));
+      return { start: dateValue(cutoff), end: dateValue(now) };
+    }
+
+    function displayDate(value) {
+      return new Intl.DateTimeFormat(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      }).format(new Date(`${value}T00:00:00`));
+    }
+
+    function showHistory(name, records) {
+      const key = volunteerKey(name);
+      const range = getHistoryDateRange();
+      visibleHistoryRecords = records
+        .filter((record) =>
+          volunteerKey(record.volunteerName) === key &&
+          record.eventDate >= range.start &&
+          record.eventDate <= range.end
+        )
+        .sort((a, b) => b.eventDate.localeCompare(a.eventDate) || b.submittedAt.localeCompare(a.submittedAt));
+      historyRows.replaceChildren();
+
+      for (const record of visibleHistoryRecords) {
+        const row = document.createElement("tr");
+        for (const value of [
+          displayDate(record.eventDate),
+          record.eventName,
+          formatHours(record.hours),
+          record.serviceLocation,
+          record.representativeName
+        ]) {
+          const cell = document.createElement("td");
+          cell.textContent = value;
+          row.append(cell);
+        }
+        const signatureCell = document.createElement("td");
+        const signatureImage = document.createElement("img");
+        signatureImage.className = "history-signature";
+        signatureImage.src = record.signature;
+        signatureImage.alt = `Signature by ${record.representativeName}`;
+        signatureCell.append(signatureImage);
+        row.append(signatureCell);
+        historyRows.append(row);
+      }
+
+      if (!visibleHistoryRecords.length) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.colSpan = 6;
+        cell.textContent = "No events in this one-year history window.";
+        row.append(cell);
+        historyRows.append(row);
+      }
+
+      document.querySelector("#download-history-button").disabled = visibleHistoryRecords.length === 0;
+      const totalHours = visibleHistoryRecords.reduce((total, record) => total + Number(record.hours), 0);
+      const firstMatch = records.find((record) => volunteerKey(record.volunteerName) === key);
+      visibleHistoryName = firstMatch ? firstMatch.volunteerName : name.trim();
+      document.querySelector("#history-title").textContent = `Service history for ${visibleHistoryName}`;
+      document.querySelector("#history-summary").textContent =
+        `${visibleHistoryRecords.length} event${visibleHistoryRecords.length === 1 ? "" : "s"} · ${formatHours(totalHours)} total · ${displayDate(range.start)} – ${displayDate(range.end)}`;
+      historyPanel.hidden = false;
+    }
+
+    try {
+      savedRecords = readSavedRecords();
+    } catch (error) {
+      formStatus.textContent = "Saved volunteer records could not be loaded from this browser. You can still create and download a record.";
+    }
+
+    document.querySelector("#volunteer-name").addEventListener("input", () => {
+      historyPanel.hidden = true;
+      visibleHistoryRecords = [];
+    });
+
+    document.querySelector("#view-history-button").addEventListener("click", () => {
+      const name = document.querySelector("#volunteer-name").value.trim();
+      if (!name) {
+        formStatus.textContent = "Enter a volunteer name to view their saved service history.";
+        document.querySelector("#volunteer-name").focus();
+        return;
+      }
+      try {
+        savedRecords = readSavedRecords();
+        showHistory(name, savedRecords);
+        formStatus.textContent = visibleHistoryRecords.length
+          ? `Showing ${visibleHistoryRecords.length} saved event${visibleHistoryRecords.length === 1 ? "" : "s"} for ${name}.`
+          : `No events from ${displayDate(getHistoryDateRange().start)} through today for ${name}.`;
+      } catch (error) {
+        formStatus.textContent = "Saved volunteer records could not be read. Create a record to start a new history.";
+      }
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      if (!hasSignature) {
+        signaturePad.setAttribute("aria-invalid", "true");
+        signatureCanvas.setAttribute("aria-invalid", "true");
+        formStatus.textContent = "Please add the representative's handwritten signature before creating the record.";
+        signatureCanvas.focus();
+        return;
+      }
+
+      const values = new FormData(form);
+      const eventDateValue = values.get("eventDate");
+
+      for (const [name, element] of Object.entries(recordFields)) {
+        const rawValue = values.get(name);
+        element.textContent = name === "hours"
+          ? formatHours(rawValue)
+          : safeText(rawValue);
+      }
+
+      const date = new Date(`${eventDateValue}T00:00:00`);
+      recordFields.eventDate.textContent = new Intl.DateTimeFormat(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }).format(date);
+
+      if (safeText(values.get("serviceLocation")) === "—") {
+        recordFields.serviceLocation.textContent = "On-site / not specified";
+      }
+
+      if (safeText(values.get("serviceNotes")) === "—") {
+        recordFields.serviceNotes.textContent = "No additional notes recorded.";
+      }
+
+      document.querySelector("#record-signature").src = signatureCanvas.toDataURL("image/png");
+      const newRecord = {
+        organizationName: safeText(values.get("organizationName")),
+        volunteerName: safeText(values.get("volunteerName")),
+        representativeName: safeText(values.get("representativeName")),
+        eventName: safeText(values.get("eventName")),
+        eventDate: eventDateValue.toString(),
+        serviceLocation: safeText(values.get("serviceLocation")) === "—"
+          ? "On-site / not specified"
+          : safeText(values.get("serviceLocation")),
+        hours: Number(values.get("hours")),
+        serviceNotes: safeText(values.get("serviceNotes")) === "—"
+          ? "No additional notes recorded."
+          : safeText(values.get("serviceNotes")),
+        signature: signatureCanvas.toDataURL("image/png"),
+        submittedAt: new Date().toISOString()
+      };
+      let savedSuccessfully = true;
+      try {
+        const updatedRecords = [...readSavedRecords(), newRecord];
+        localStorage.setItem(storageKey, JSON.stringify(updatedRecords));
+        savedRecords = updatedRecords;
+      } catch (error) {
+        savedRecords = [...savedRecords, newRecord];
+        savedSuccessfully = false;
+      }
+      showHistory(newRecord.volunteerName, savedRecords);
+      result.hidden = false;
+      const historyRange = getHistoryDateRange();
+      if (!savedSuccessfully) {
+        formStatus.textContent = "Record created, but it could not be saved in this browser. Download the history now before leaving this page.";
+      } else if (newRecord.eventDate < historyRange.start || newRecord.eventDate > historyRange.end) {
+        formStatus.textContent = "Service record saved, but its date is outside the one-year history window.";
+      } else {
+        formStatus.textContent = `Service record saved. ${visibleHistoryRecords.length} event${visibleHistoryRecords.length === 1 ? "" : "s"} are on file for ${newRecord.volunteerName}.`;
+      }
+      result.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    document.querySelector("#print-button").addEventListener("click", () => window.print());
+    document.querySelector("#download-history-button").addEventListener("click", () => {
+      if (!visibleHistoryRecords.length) {
+        formStatus.textContent = "There are no saved service events to download for this volunteer.";
+        return;
+      }
+
+      const escapeXml = (value) => value.toString().replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&apos;");
+      const xmlText = (value) => `<t xml:space="preserve">${escapeXml(value)}</t>`;
+      const textCell = (column, row, value) =>
+        `<c r="${column}${row}" t="inlineStr"><is>${xmlText(value)}</is></c>`;
+      const headers = ["Service date", "Organization", "Program / activity", "Hours", "Location", "Impact notes", "Verified by", "Signature"];
+      const columns = ["A", "B", "C", "D", "E", "F", "G", "H"];
+      const metadataRows = [
+        `<row r="1">${textCell("A", 1, "Volunteer")}${textCell("B", 1, visibleHistoryName)}</row>`,
+        `<row r="2">${textCell("A", 2, "Events on file")}${textCell("B", 2, visibleHistoryRecords.length.toString())}</row>`,
+        `<row r="4">${headers.map((header, index) => textCell(columns[index], 4, header)).join("")}</row>`
+      ];
+      const eventRows = visibleHistoryRecords.map((record, index) => {
+        const row = index + 5;
+        const values = [
+          displayDate(record.eventDate),
+          record.organizationName,
+          record.eventName,
+          Number(record.hours),
+          record.serviceLocation,
+          record.serviceNotes,
+          record.representativeName
+        ];
+        const cells = values.map((value, cellIndex) => cellIndex === 3
+          ? `<c r="D${row}"><v>${value}</v></c>`
+          : textCell(columns[cellIndex], row, value));
+        return `<row r="${row}" ht="52" customHeight="1">${cells.join("")}</row>`;
+      });
+      const lastRow = visibleHistoryRecords.length + 4;
+      const signatureImages = visibleHistoryRecords.map((record, index) => ({
+        name: `xl/media/signature-${index + 1}.png`,
+        bytes: Uint8Array.from(
+          atob(record.signature.split(",")[1]),
+          (character) => character.charCodeAt(0)
+        )
+      }));
+      const drawingEntries = visibleHistoryRecords.map((record, index) => {
+        const row = index + 4;
+        const imageNumber = index + 1;
+        return `<xdr:oneCellAnchor><xdr:from><xdr:col>7</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>${row}</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from><xdr:ext cx="1905000" cy="485775"/><xdr:pic><xdr:nvPicPr><xdr:cNvPr id="${imageNumber}" name="Signature ${imageNumber}"/><xdr:cNvPicPr/></xdr:nvPicPr><xdr:blipFill><a:blip r:embed="rId${imageNumber}"/><a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/></xdr:oneCellAnchor>`;
+      }).join("");
+      const drawingRelationships = visibleHistoryRecords.map((record, index) =>
+        `<Relationship Id="rId${index + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../media/signature-${index + 1}.png"/>`
+      ).join("");
+      const files = [
+        {
+          name: "[Content_Types].xml",
+          text: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/drawings/drawing1.xml" ContentType="application/vnd.openxmlformats-officedocument.drawing+xml"/></Types>'
+        },
+        {
+          name: "_rels/.rels",
+          text: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'
+        },
+        {
+          name: "xl/workbook.xml",
+          text: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Volunteer History" sheetId="1" r:id="rId1"/></sheets></workbook>'
+        },
+        {
+          name: "xl/_rels/workbook.xml.rels",
+          text: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>'
+        },
+        {
+          name: "xl/worksheets/sheet1.xml",
+          text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheetViews><sheetView workbookViewId="0"/></sheetViews><cols><col min="1" max="1" width="16" customWidth="1"/><col min="2" max="2" width="28" customWidth="1"/><col min="3" max="3" width="32" customWidth="1"/><col min="4" max="4" width="12" customWidth="1"/><col min="5" max="5" width="27" customWidth="1"/><col min="6" max="6" width="50" customWidth="1"/><col min="7" max="7" width="25" customWidth="1"/><col min="8" max="8" width="28" customWidth="1"/></cols><sheetData>${metadataRows.join("")}${eventRows.join("")}</sheetData><autoFilter ref="A4:H${lastRow}"/><drawing r:id="rId1"/></worksheet>`
+        },
+        {
+          name: "xl/worksheets/_rels/sheet1.xml.rels",
+          text: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing" Target="../drawings/drawing1.xml"/></Relationships>'
+        },
+        {
+          name: "xl/drawings/drawing1.xml",
+          text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">${drawingEntries}</xdr:wsDr>`
+        },
+        {
+          name: "xl/drawings/_rels/drawing1.xml.rels",
+          text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${drawingRelationships}</Relationships>`
+        },
+        ...signatureImages
+      ];
+
+      const encoder = new TextEncoder();
+      const crcTable = Array.from({ length: 256 }, (_, value) => {
+        let crc = value;
+        for (let bit = 0; bit < 8; bit++) crc = crc & 1 ? 0xedb88320 ^ (crc >>> 1) : crc >>> 1;
+        return crc >>> 0;
+      });
+      const crc32 = (bytes) => {
+        let crc = 0xffffffff;
+        for (const byte of bytes) crc = crcTable[(crc ^ byte) & 0xff] ^ (crc >>> 8);
+        return (crc ^ 0xffffffff) >>> 0;
+      };
+      const localParts = [];
+      const centralParts = [];
+      let localOffset = 0;
+
+      for (const file of files) {
+        const name = encoder.encode(file.name);
+        const data = file.bytes || encoder.encode(file.text);
+        const checksum = crc32(data);
+        const localHeader = new Uint8Array(30 + name.length);
+        const localView = new DataView(localHeader.buffer);
+        localView.setUint32(0, 0x04034b50, true);
+        localView.setUint16(4, 20, true);
+        localView.setUint16(6, 0x0800, true);
+        localView.setUint16(8, 0, true);
+        localView.setUint16(12, 33, true);
+        localView.setUint32(14, checksum, true);
+        localView.setUint32(18, data.length, true);
+        localView.setUint32(22, data.length, true);
+        localView.setUint16(26, name.length, true);
+        localHeader.set(name, 30);
+        localParts.push(localHeader, data);
+
+        const centralHeader = new Uint8Array(46 + name.length);
+        const centralView = new DataView(centralHeader.buffer);
+        centralView.setUint32(0, 0x02014b50, true);
+        centralView.setUint16(4, 20, true);
+        centralView.setUint16(6, 20, true);
+        centralView.setUint16(8, 0x0800, true);
+        centralView.setUint16(10, 0, true);
+        centralView.setUint16(14, 33, true);
+        centralView.setUint32(16, checksum, true);
+        centralView.setUint32(20, data.length, true);
+        centralView.setUint32(24, data.length, true);
+        centralView.setUint16(28, name.length, true);
+        centralView.setUint32(42, localOffset, true);
+        centralHeader.set(name, 46);
+        centralParts.push(centralHeader);
+        localOffset += localHeader.length + data.length;
+      }
+
+      const centralSize = centralParts.reduce((size, part) => size + part.length, 0);
+      const endRecord = new Uint8Array(22);
+      const endView = new DataView(endRecord.buffer);
+      endView.setUint32(0, 0x06054b50, true);
+      endView.setUint16(8, files.length, true);
+      endView.setUint16(10, files.length, true);
+      endView.setUint32(12, centralSize, true);
+      endView.setUint32(16, localOffset, true);
+      const workbook = new Blob([...localParts, ...centralParts, endRecord], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      });
+      const link = document.createElement("a");
+      const volunteerName = visibleHistoryName;
+      const safeName = volunteerName.replace(/[\\/:*?"<>|]/g, "-") || "Volunteer";
+      link.href = URL.createObjectURL(workbook);
+      link.download = `${safeName} - volunteer history.xlsx`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+      formStatus.textContent = `Excel history downloaded for ${volunteerName} (${visibleHistoryRecords.length} events).`;
+    });
+    document.querySelector("#edit-button").addEventListener("click", () => {
+      result.hidden = true;
+      formStatus.textContent = "Service record hidden. Edit the form and create a new record when ready.";
+      document.querySelector("#volunteer-name").focus();
+    });
+  </script>
+</body>
+</html>
