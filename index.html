@@ -356,7 +356,7 @@
 
     .side-caption {
       margin: 15px 0 0;
-      color: #5f7467;
+      color: var(--off-white);
       font-size: 11px;
       line-height: 1.6;
     }
@@ -385,7 +385,7 @@
     .result-kicker {
       margin: 0 0 6px;
       color: var(--red);
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 750;
       letter-spacing: .13em;
       text-transform: uppercase;
@@ -415,7 +415,7 @@
     .record-item span {
       display: block;
       margin-bottom: 5px;
-      color: var(--muted);
+      color: var(--off-white);
       font-size: 10px;
       font-weight: 700;
       letter-spacing: .07em;
@@ -460,7 +460,7 @@
     .history-scroll { overflow-x: auto; }
     .history-table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
     .history-table th, .history-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
-    .history-table th { color: var(--muted); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+    .history-table th { color: var(--off-white); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
     .history-table td { overflow-wrap: anywhere; }
     .history-signature { display: block; width: 110px; height: 42px; object-fit: contain; object-position: left center; }
     .history-actions { display: flex; justify-content: flex-end; margin-top: 16px; }
@@ -468,7 +468,7 @@
     .result-footnote {
       margin: 0;
       padding-top: 15px;
-      color: var(--muted);
+      color: var(--off-white);
       border-top: 1px solid var(--line);
       font-size: 11px;
       line-height: 1.5;
@@ -692,6 +692,7 @@
     signatureCanvas.width = Math.round(signatureCanvas.clientWidth * (window.devicePixelRatio || 1));
     signatureCanvas.height = Math.round(signatureCanvas.clientHeight * (window.devicePixelRatio || 1));
     signatureContext.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+    // Color and style for the signature stroke
     signatureContext.strokeStyle = "#006de1";
     signatureContext.lineWidth = 2.4;
     signatureContext.lineCap = "round";
