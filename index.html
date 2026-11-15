@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f6ef">
   <meta name="description" content="Create a printable record of nonprofit volunteer service hours.">
-  <title>Volunteer service record</title>
+  <title>CHEER Service Record</title>
   <style>
     :root {
       color-scheme: light;
       --ink: #20342f;
-      --muted: #6d7a72;
-      --green: #245c48;
-      --green-dark: #194634;
+      --muted: #7a6d6d;
+      --red: #e04f3c;
+      --red-dark: #a10d0d;
       --mint: #e4eee5;
       --paper: #fffefa;
       --line: #e3e7df;
@@ -65,7 +65,7 @@
       width: 36px;
       height: 36px;
       color: white;
-      background: var(--green);
+      background: var(--red);
       border-radius: 12px;
       place-items: center;
     }
@@ -86,7 +86,7 @@
       align-items: center;
       gap: 8px;
       margin-bottom: 12px;
-      color: var(--green);
+      color: var(--red);
       font-size: 11px;
       font-weight: 750;
       letter-spacing: .13em;
@@ -140,7 +140,7 @@
       display: grid;
       flex: 0 0 34px;
       height: 34px;
-      color: var(--green);
+      color: var(--red);
       background: var(--mint);
       border-radius: 11px;
       font-size: 13px;
@@ -236,7 +236,7 @@
 
     .signature-tools button {
       padding: 4px 8px;
-      color: var(--green);
+      color: var(--red);
       background: transparent;
       border: 0;
       font-size: 11px;
@@ -284,11 +284,11 @@
 
     .primary-button {
       color: white;
-      background: var(--green);
-      border: 1px solid var(--green);
+      background: var(--red);
+      border: 1px solid var(--red);
     }
 
-    .primary-button:hover { background: var(--green-dark); }
+    .primary-button:hover { background: var(--red-dark); }
     .primary-button:active, .secondary-button:active { transform: translateY(1px); }
     .primary-button:disabled { cursor: not-allowed; opacity: .55; }
 
@@ -317,7 +317,7 @@
     }
 
     .side-label {
-      color: var(--green);
+      color: var(--red);
       font-size: 10px;
       font-weight: 750;
       letter-spacing: .14em;
@@ -381,7 +381,7 @@
 
     .result-kicker {
       margin: 0 0 6px;
-      color: var(--green);
+      color: var(--red);
       font-size: 10px;
       font-weight: 750;
       letter-spacing: .13em;
@@ -394,7 +394,7 @@
     .secondary-button {
       min-height: 38px;
       padding: 0 13px;
-      color: var(--green);
+      color: var(--red);
       background: white;
       border: 1px solid var(--line);
       font-size: 12px;
@@ -534,14 +534,14 @@
 <body>
   <main class="page-shell">
     <header class="topbar">
-      <a class="brand" href="#" aria-label="Volunteer Service Record home">
+      <a class="brand" href="#" aria-label="CHEER Service Record home">
         <span class="brand-mark" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M12 20s-7.5-4.35-7.5-10.05A4.2 4.2 0 0 1 12 7.7a4.2 4.2 0 0 1 7.5 2.25C19.5 15.65 12 20 12 20Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M8.5 12h2l1.2-2.2 1.5 4.2 1.1-2H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
-        Volunteer Service Record
+        CHEER Service Record
       </a>
     </header>
 
@@ -559,7 +559,7 @@
           <div class="fields">
             <div class="field">
               <label for="organization-name">Organization name <span class="required" aria-hidden="true">*</span></label>
-              <input id="organization-name" name="organizationName" type="text" value="Community Care Collective" required maxlength="120">
+              <input id="organization-name" name="organizationName" type="text" value="CHEER" required maxlength="120">
             </div>
             <div class="field">
               <label for="representative-name">Representative name <span class="required" aria-hidden="true">*</span></label>
@@ -572,7 +572,7 @@
             </div>
             <div class="field">
               <label for="event-name">Event or activity <span class="required" aria-hidden="true">*</span></label>
-              <input id="event-name" name="eventName" type="text" placeholder="e.g. Community garden day" required maxlength="120">
+              <input id="event-name" name="eventName" type="text" placeholder="e.g. Trash pickup" required maxlength="120">
             </div>
             <div class="field">
               <label for="event-date">Date of service <span class="required" aria-hidden="true">*</span></label>
@@ -615,7 +615,7 @@
         </form>
       </div>
       <aside class="side-panel" aria-hidden="true">
-        <p class="side-label">Volunteer service record</p>
+        <p class="side-label">CHEER Service Record</p>
         <div class="side-bottom">
           <svg viewBox="0 0 260 100" fill="none" aria-hidden="true">
             <path d="M1 82c25-25 43-25 68 0s43 25 68 0 43-25 68 0 36 23 54 7" stroke="#92ad91" stroke-width="1.5"/>
