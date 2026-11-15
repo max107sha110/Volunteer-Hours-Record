@@ -18,6 +18,7 @@
       --muted: #252222;
       --line: #ccc6c6;
       --cyan: #66b2b6;
+      --dark-cyan: #2e5a89;
       --orange: #e9a45b;
       --shadow: 0 24px 70px rgba(223, 241, 255, 0.09);
       font-family: "Segoe UI", "Helvetica Neue", sans-serif;
@@ -203,8 +204,8 @@
     input::placeholder, textarea::placeholder { color: #a4ada5; }
 
     input:focus, select:focus, textarea:focus {
-      border-color: #8ecdd0;
-      box-shadow: 0 0 0 3px rgb(81 137 105 / 13%);
+      border-color: var(--dark-cyan);
+      box-shadow: 0 0 0 3px rgba(62, 145, 233, 0.13);
     }
 
     .signature-pad {
@@ -216,7 +217,7 @@
 
     .signature-pad:focus-within {
       border-color: #ffffff;
-      box-shadow: 0 0 0 3px rgb(81 137 105 / 13%);
+      box-shadow: 0 0 0 3px rgba(46, 90, 138, 0.13);
     }
 
     .signature-pad[aria-invalid="true"] { border-color: #b45c37; }
@@ -355,7 +356,7 @@
 
     .side-caption {
       margin: 15px 0 0;
-      color: #5f7467;
+      color: var(--off-white);
       font-size: 11px;
       line-height: 1.6;
     }
@@ -384,7 +385,7 @@
     .result-kicker {
       margin: 0 0 6px;
       color: var(--red);
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 750;
       letter-spacing: .13em;
       text-transform: uppercase;
@@ -414,7 +415,7 @@
     .record-item span {
       display: block;
       margin-bottom: 5px;
-      color: var(--muted);
+      color: var(--off-white);
       font-size: 10px;
       font-weight: 700;
       letter-spacing: .07em;
@@ -459,7 +460,7 @@
     .history-scroll { overflow-x: auto; }
     .history-table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
     .history-table th, .history-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
-    .history-table th { color: var(--muted); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+    .history-table th { color: var(--off-white); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
     .history-table td { overflow-wrap: anywhere; }
     .history-signature { display: block; width: 110px; height: 42px; object-fit: contain; object-position: left center; }
     .history-actions { display: flex; justify-content: flex-end; margin-top: 16px; }
@@ -467,7 +468,7 @@
     .result-footnote {
       margin: 0;
       padding-top: 15px;
-      color: var(--muted);
+      color: var(--off-white);
       border-top: 1px solid var(--line);
       font-size: 11px;
       line-height: 1.5;
@@ -536,13 +537,8 @@
 <body>
   <main class="page-shell">
     <header class="topbar">
-      <a class="brand" href="sfvcheer.org" aria-label="CHEER Service Record home">
-        <span class="brand-mark" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M12 20s-7.5-4.35-7.5-10.05A4.2 4.2 0 0 1 12 7.7a4.2 4.2 0 0 1 7.5 2.25C19.5 15.65 12 20 12 20Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M8.5 12h2l1.2-2.2 1.5 4.2 1.1-2H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
+      <a class="brand" href="sfvcheer.org" aria-label="Redirect to CHEER homepage">
+        <img src="https://static.wixstatic.com/media/fb1f48_4e563ef1e9cc41d3b36327a70119552f~mv2.png/v1/fill/w_372,h_322,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/cheer-logo-transparent-padded.png" alt="CHEER logo" width="36" height="36">
         CHEER Service Record
       </a>
     </header>
@@ -619,14 +615,7 @@
       <aside class="side-panel" aria-hidden="true">
         <p class="side-label">CHEER Service Record</p>
         <div class="side-bottom">
-          <svg viewBox="0 0 260 100" fill="none" aria-hidden="true">
-            <path d="M1 82c25-25 43-25 68 0s43 25 68 0 43-25 68 0 36 23 54 7" stroke="#92ad91" stroke-width="1.5"/>
-            <path d="M18 72c18-18 31-18 49 0s31 18 49 0 31-18 49 0 31 18 49 0" stroke="#b1c3a9" stroke-width="1.5"/>
-            <path d="M69 57c0-14 11-25 25-25s25 11 25 25M94 32V13m0 0c-12 0-20 8-20 19m20-19c12 0 20 8 20 19" stroke="#60866c" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M92 57v24m0-14c-11 0-17-6-17-15m17 24c11 0 17-6 17-15" stroke="#60866c" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="93" cy="8" r="3" fill="#e9a45b"/>
-          </svg>
-          <p class="side-caption">A record of time, care, and community.</p>
+          <p class="side-caption">A Community for Holistic Education and Empowerment of Civic Responsibility</p>
         </div>
       </aside>
     </section>
@@ -703,7 +692,8 @@
     signatureCanvas.width = Math.round(signatureCanvas.clientWidth * (window.devicePixelRatio || 1));
     signatureCanvas.height = Math.round(signatureCanvas.clientHeight * (window.devicePixelRatio || 1));
     signatureContext.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
-    signatureContext.strokeStyle = "#f5f6ef";
+    // Color and style for the signature stroke
+    signatureContext.strokeStyle = "#006de1";
     signatureContext.lineWidth = 2.4;
     signatureContext.lineCap = "round";
     signatureContext.lineJoin = "round";
