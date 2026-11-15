@@ -8,16 +8,18 @@
   <title>CHEER Service Record</title>
   <style>
     :root {
-      color-scheme: light;
-      --ink: #20342f;
-      --muted: #7a6d6d;
+      color-scheme: dark;
+      --off-white: #f5f6ef;
+      
       --red: #e04f3c;
+      
       --red-dark: #a10d0d;
-      --mint: #e4eee5;
-      --paper: #fffefa;
-      --line: #e3e7df;
+      --black-red: #160000;
+      --muted: #252222;
+      --line: #ccc6c6;
+      --cyan: #66b2b6;
       --orange: #e9a45b;
-      --shadow: 0 24px 70px rgb(32 52 47 / 9%);
+      --shadow: 0 24px 70px rgba(223, 241, 255, 0.09);
       font-family: "Segoe UI", "Helvetica Neue", sans-serif;
     }
 
@@ -27,10 +29,10 @@
       min-width: 320px;
       min-height: 100vh;
       margin: 0;
-      color: var(--ink);
+      color: var(--off-white);
       background:
-        radial-gradient(ellipse at 9% 12%, rgb(230 237 222 / 70%), transparent 29rem),
-        #f5f6ef;
+        radial-gradient(ellipse at 9% 12%, rgba(48, 45, 45, 0.7), transparent 29rem),
+        #1e2206;
     }
 
     button, input, select, textarea { font: inherit; }
@@ -53,7 +55,7 @@
       display: inline-flex;
       gap: 11px;
       align-items: center;
-      color: var(--ink);
+      color: var(--off-white);
       font-size: 19px;
       font-weight: 750;
       letter-spacing: -.04em;
@@ -121,8 +123,8 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) 330px;
       overflow: hidden;
-      background: var(--paper);
-      border: 1px solid rgb(32 52 47 / 6%);
+      background: var(--black-red);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 24px;
       box-shadow: var(--shadow);
     }
@@ -140,8 +142,8 @@
       display: grid;
       flex: 0 0 34px;
       height: 34px;
-      color: var(--red);
-      background: var(--mint);
+      color: var(--off-white);
+      background: var(--black-red);
       border-radius: 11px;
       font-size: 13px;
       font-weight: 750;
@@ -156,9 +158,9 @@
       letter-spacing: -.025em;
     }
 
-    .section-heading p {
+    .section-heading {
       margin: 5px 0 0;
-      color: var(--muted);
+      color: var(--off-white);
       font-size: 13px;
     }
 
@@ -184,8 +186,8 @@
       width: 100%;
       min-height: 48px;
       padding: 0 14px;
-      color: var(--ink);
-      background: #fff;
+      color: var(--off-white);
+      background: var(--muted);
       border: 1px solid var(--line);
       border-radius: 10px;
       outline: none;
@@ -201,19 +203,19 @@
     input::placeholder, textarea::placeholder { color: #a4ada5; }
 
     input:focus, select:focus, textarea:focus {
-      border-color: #6e9a82;
+      border-color: #8ecdd0;
       box-shadow: 0 0 0 3px rgb(81 137 105 / 13%);
     }
 
     .signature-pad {
       overflow: hidden;
-      background: #fff;
+      background: var(--muted);
       border: 1px solid var(--line);
       border-radius: 10px;
     }
 
     .signature-pad:focus-within {
-      border-color: #6e9a82;
+      border-color: #ffffff;
       box-shadow: 0 0 0 3px rgb(81 137 105 / 13%);
     }
 
@@ -236,7 +238,7 @@
 
     .signature-tools button {
       padding: 4px 8px;
-      color: var(--red);
+      color: var(--cyan);
       background: transparent;
       border: 0;
       font-size: 11px;
@@ -246,7 +248,7 @@
     .help-text {
       display: block;
       margin-top: 7px;
-      color: var(--muted);
+      color: var(--off-white);
       font-size: 11px;
       line-height: 1.45;
     }
@@ -264,7 +266,7 @@
     .privacy-note {
       max-width: 255px;
       margin: 0;
-      color: var(--muted);
+      color: var(--off-white);
       font-size: 11px;
       line-height: 1.5;
     }
@@ -283,12 +285,12 @@
     }
 
     .primary-button {
-      color: white;
-      background: var(--red);
-      border: 1px solid var(--red);
+      color: var(--off-white);
+      background: var(--cyan);
+      border: 1px solid var(--cyan);
     }
 
-    .primary-button:hover { background: var(--red-dark); }
+    .primary-button:hover { background: var(--orange); }
     .primary-button:active, .secondary-button:active { transform: translateY(1px); }
     .primary-button:disabled { cursor: not-allowed; opacity: .55; }
 
@@ -300,7 +302,7 @@
       min-height: 100%;
       padding: 34px 29px;
       overflow: hidden;
-      background: #eaf0e7;
+      background: var(--muted);
     }
 
     .side-panel::after {
@@ -317,7 +319,7 @@
     }
 
     .side-label {
-      color: var(--red);
+      color: var(--orange);
       font-size: 10px;
       font-weight: 750;
       letter-spacing: .14em;
@@ -362,7 +364,7 @@
       max-width: 700px;
       margin: 24px auto 0;
       padding: 28px 32px;
-      background: var(--paper);
+      background: var(--black-red);
       border: 1px solid var(--line);
       border-radius: 18px;
       box-shadow: 0 12px 35px rgb(32 52 47 / 6%);
@@ -394,8 +396,8 @@
     .secondary-button {
       min-height: 38px;
       padding: 0 13px;
-      color: var(--red);
-      background: white;
+      color: var(--cyan);
+      background: var(--muted);
       border: 1px solid var(--line);
       font-size: 12px;
     }
@@ -444,7 +446,7 @@
       max-width: 900px;
       margin: 24px auto 0;
       padding: 28px 32px;
-      background: var(--paper);
+      background: var(--black-red);
       border: 1px solid var(--line);
       border-radius: 18px;
       box-shadow: 0 12px 35px rgb(32 52 47 / 6%);
@@ -512,7 +514,7 @@
 
     @media print {
       @page { margin: 18mm; }
-      body { min-width: 0; background: white; }
+      body { min-width: 0; background: var(--black-red); }
       .page-shell { width: 100%; padding: 0; }
       .topbar, .intro, .app-card, .result-actions, .history-panel { display: none !important; }
       .result {
@@ -534,7 +536,7 @@
 <body>
   <main class="page-shell">
     <header class="topbar">
-      <a class="brand" href="#" aria-label="CHEER Service Record home">
+      <a class="brand" href="sfvcheer.org" aria-label="CHEER Service Record home">
         <span class="brand-mark" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M12 20s-7.5-4.35-7.5-10.05A4.2 4.2 0 0 1 12 7.7a4.2 4.2 0 0 1 7.5 2.25C19.5 15.65 12 20 12 20Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -701,7 +703,7 @@
     signatureCanvas.width = Math.round(signatureCanvas.clientWidth * (window.devicePixelRatio || 1));
     signatureCanvas.height = Math.round(signatureCanvas.clientHeight * (window.devicePixelRatio || 1));
     signatureContext.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
-    signatureContext.strokeStyle = "#20342f";
+    signatureContext.strokeStyle = "#f5f6ef";
     signatureContext.lineWidth = 2.4;
     signatureContext.lineCap = "round";
     signatureContext.lineJoin = "round";
