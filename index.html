@@ -833,7 +833,9 @@
       authModeButton.disabled = true;
       resetPasswordButton.disabled = true;
       setAuthMessage("The Supabase client could not be loaded. Check your internet connection and reload.", true);
-    } else if (!supabaseConfig ||
+    } 
+    // Checks if Supabase config is valid. It may be useful for testing, but this can be deleted.
+    else if (!supabaseConfig ||
         !/^https:\/\/[^/]+\/?$/.test(supabaseConfig.url || "") ||
         !supabaseConfig.anonKey ||
         supabaseConfig.anonKey === "YOUR_SUPABASE_ANON_KEY") {
