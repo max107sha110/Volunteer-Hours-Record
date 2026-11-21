@@ -739,12 +739,14 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
   <script>
+    // Cache the main form, result, and signature elements used throughout this script.
     const form = document.querySelector("#hours-form");
     const result = document.querySelector("#result");
     const formStatus = document.querySelector("#form-status");
     const signatureCanvas = document.querySelector("#signature-canvas");
     const signaturePad = document.querySelector("#signature-pad");
     const signatureContext = signatureCanvas.getContext("2d");
+    // Cache authentication controls and account display elements.
     const authForm = document.querySelector("#auth-form");
     const authPanel = document.querySelector("#auth-panel");
     const workspace = document.querySelector("#workspace");
@@ -756,17 +758,20 @@
     const accountActions = document.querySelector("#account-actions");
     const accountEmail = document.querySelector("#account-email");
     
+    // Track signature, drawing, authentication, and recovery state.
     let hasSignature = false;
     let isDrawing = false;
     let authMode = "sign-in";
     let recoveryMode = window.location.hash.includes("type=recovery");
     let supabaseClient;
 
+    // Update the accessible status message shown to the user.
     function setAuthMessage(message, isError = false) {
       authMessage.textContent = message;
       authMessage.dataset.error = isError ? "true" : "false";
     }
 
+    // Configure the authentication view for sign-in, sign-up, or password recovery.
     function updateAuthForm() {
       const title = document.querySelector("#auth-title");
       const description = document.querySelector("#auth-description");
