@@ -21,6 +21,8 @@
       --accent: light-dark(#5a9fa2,#4a8ca3);
       --accent-dark: light-dark(#2e5a89,#3a6aa3);
       --orange: light-dark(#d88832,#e9a45b);
+
+      --gray: #888888;
       --shadow: 0 24px 70px rgba(223, 241, 255, 0.09);
       font-family: "Segoe UI", "Helvetica Neue", sans-serif;
     }
@@ -152,7 +154,7 @@
     .auth-actions { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: 14px; }
     .auth-actions button { padding: 4px 0; color: var(--accent); background: transparent; border: 0; font-size: 12px; }
     .auth-message { min-height: 20px; margin: 16px 0 0; color: var(--text); font-size: 12px; }
-    .auth-message[data-error="true"] { color: #ff9a82; }
+    .auth-message[data-error="true"] { color: var(--red); }
     .account-actions { display: flex; align-items: center; gap: 12px; }
     .account-email { max-width: 260px; overflow: hidden; color: var(--text); font-size: 12px; text-overflow: ellipsis; }
     .workspace[hidden], .auth-panel[hidden] { display: none; }
@@ -208,7 +210,7 @@
       font-weight: 700;
     }
 
-    .required { color: #b45c37; }
+    .required { color: var(--red); }
 
     input, select, textarea {
       width: 100%;
@@ -572,7 +574,7 @@
       .result h2 { font-size: 28px; }
       .record-grid { gap: 25px 35px; padding: 28px 0; }
       .result-item strong { font-size: 16px; }
-      .result-footnote { color: #555; }
+      .result-footnote { color: var(--gray); }
     }
   </style>
 </head>
@@ -818,10 +820,14 @@
       const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     }
-
+    // The cuttoff date is one year prior by default.
+    // To change the cuttoff date: modify cutoffYear(if needed) and/or cutoffMonth in the getHistoryDateRange function.
     function getHistoryDateRange(now = new Date()) {
+      // The cutoff is one year prior, same month as now, and the day is the minimum of today's date or the last day of that month in the cutoff year.
       const cutoffYear = now.getFullYear() - 1;
+      // Get the last day of the current month in the cutoff year
       const lastDayOfCutoffMonth = new Date(cutoffYear, now.getMonth() + 1, 0).getDate();
+      // Use the smaller of today's date or the last day of the cutoff month to avoid invalid dates (e.g., Feb 30)
       const cutoff = new Date(cutoffYear, now.getMonth(), Math.min(now.getDate(), lastDayOfCutoffMonth));
       return { start: dateValue(cutoff), end: dateValue(now) };
     }
