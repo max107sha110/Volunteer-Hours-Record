@@ -8,20 +8,18 @@
   <title>CHEER Service Record</title>
   <style>
     :root {
-      color-scheme: dark;
-      /*Main text color*/
-      --off-white: #f5f6ef;
+      color-scheme: light dark;
+      --text: light-dark(#000000, #f5f6ef);
       
       --red: #e04f3c;
-      
       --red-dark: #a10d0d;
       /*Body colors*/
-      --black-red: #160000;
+      --body: light-dark(#f5f6ef, #160000);
       --muted: #252222;
       --line: #ccc6c6;
       /*Button, accent colors*/
-      --cyan: #66b2b6;
-      --dark-cyan: #2e5a89;
+      --accent: #66b2b6;
+      --dark-accent: #2e5a89;
       --orange: #e9a45b;
       --shadow: 0 24px 70px rgba(223, 241, 255, 0.09);
       font-family: "Segoe UI", "Helvetica Neue", sans-serif;
@@ -33,10 +31,10 @@
       min-width: 320px;
       min-height: 100vh;
       margin: 0;
-      color: var(--off-white);
+      color: var(--text);
       background:
         radial-gradient(ellipse at 9% 12%, rgba(48, 45, 45, 0.7), transparent 29rem),
-        #1e2206;
+        var(--body);
     }
 
     button, input, select, textarea { font: inherit; }
@@ -59,7 +57,7 @@
       display: inline-flex;
       gap: 11px;
       align-items: center;
-      color: var(--off-white);
+      color: var(--text);
       font-size: 19px;
       font-weight: 750;
       letter-spacing: -.04em;
@@ -127,7 +125,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) 330px;
       overflow: hidden;
-      background: var(--black-red);
+      background: var(--body);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 24px;
       box-shadow: var(--shadow);
@@ -137,22 +135,22 @@
       max-width: 470px;
       margin: 0 auto;
       padding: 32px;
-      background: var(--black-red);
+      background: var(--body);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 20px;
       box-shadow: var(--shadow);
     }
 
     .auth-panel h1 { font-size: clamp(32px, 5vw, 42px); }
-    .auth-panel > p { color: var(--off-white); font-size: 13px; line-height: 1.6; }
+    .auth-panel > p { color: var(--text); font-size: 13px; line-height: 1.6; }
     .auth-panel .field { margin-top: 20px; }
     .auth-panel .primary-button { width: 100%; margin-top: 24px; }
     .auth-actions { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: 14px; }
-    .auth-actions button { padding: 4px 0; color: var(--cyan); background: transparent; border: 0; font-size: 12px; }
-    .auth-message { min-height: 20px; margin: 16px 0 0; color: var(--off-white); font-size: 12px; }
+    .auth-actions button { padding: 4px 0; color: var(--accent); background: transparent; border: 0; font-size: 12px; }
+    .auth-message { min-height: 20px; margin: 16px 0 0; color: var(--text); font-size: 12px; }
     .auth-message[data-error="true"] { color: #ff9a82; }
     .account-actions { display: flex; align-items: center; gap: 12px; }
-    .account-email { max-width: 260px; overflow: hidden; color: var(--off-white); font-size: 12px; text-overflow: ellipsis; }
+    .account-email { max-width: 260px; overflow: hidden; color: var(--text); font-size: 12px; text-overflow: ellipsis; }
     .workspace[hidden], .auth-panel[hidden] { display: none; }
 
     .form-panel { padding: 36px 40px 32px; }
@@ -168,8 +166,8 @@
       display: grid;
       flex: 0 0 34px;
       height: 34px;
-      color: var(--off-white);
-      background: var(--black-red);
+      color: var(--text);
+      background: var(--body);
       border-radius: 11px;
       font-size: 13px;
       font-weight: 750;
@@ -186,7 +184,7 @@
 
     .section-heading {
       margin: 5px 0 0;
-      color: var(--off-white);
+      color: var(--text);
       font-size: 13px;
     }
 
@@ -212,7 +210,7 @@
       width: 100%;
       min-height: 48px;
       padding: 0 14px;
-      color: var(--off-white);
+      color: var(--text);
       background: var(--muted);
       border: 1px solid var(--line);
       border-radius: 10px;
@@ -229,7 +227,7 @@
     input::placeholder, textarea::placeholder { color: #a4ada5; }
 
     input:focus, select:focus, textarea:focus {
-      border-color: var(--dark-cyan);
+      border-color: var(--dark-accent);
       box-shadow: 0 0 0 3px rgba(62, 145, 233, 0.13);
     }
 
@@ -264,7 +262,7 @@
 
     .signature-tools button {
       padding: 4px 8px;
-      color: var(--cyan);
+      color: var(--accent);
       background: transparent;
       border: 0;
       font-size: 11px;
@@ -274,7 +272,7 @@
     .help-text {
       display: block;
       margin-top: 7px;
-      color: var(--off-white);
+      color: var(--text);
       font-size: 11px;
       line-height: 1.45;
     }
@@ -292,7 +290,7 @@
     .privacy-note {
       max-width: 255px;
       margin: 0;
-      color: var(--off-white);
+      color: var(--text);
       font-size: 11px;
       line-height: 1.5;
     }
@@ -311,9 +309,9 @@
     }
 
     .primary-button {
-      color: var(--off-white);
-      background: var(--cyan);
-      border: 1px solid var(--cyan);
+      color: var(--text);
+      background: var(--accent);
+      border: 1px solid var(--accent);
     }
 
     .primary-button:hover { background: var(--orange); }
@@ -381,7 +379,7 @@
 
     .side-caption {
       margin: 15px 0 0;
-      color: var(--off-white);
+      color: var(--text);
       font-size: 11px;
       line-height: 1.6;
     }
@@ -390,7 +388,7 @@
       max-width: 700px;
       margin: 24px auto 0;
       padding: 28px 32px;
-      background: var(--black-red);
+      background: var(--body);
       border: 1px solid var(--line);
       border-radius: 18px;
       box-shadow: 0 12px 35px rgb(32 52 47 / 6%);
@@ -422,7 +420,7 @@
     .secondary-button {
       min-height: 38px;
       padding: 0 13px;
-      color: var(--cyan);
+      color: var(--accent);
       background: var(--muted);
       border: 1px solid var(--line);
       font-size: 12px;
@@ -440,7 +438,7 @@
     .record-item span {
       display: block;
       margin-bottom: 5px;
-      color: var(--off-white);
+      color: var(--text);
       font-size: 10px;
       font-weight: 700;
       letter-spacing: .07em;
@@ -472,7 +470,7 @@
       max-width: 900px;
       margin: 24px auto 0;
       padding: 28px 32px;
-      background: var(--black-red);
+      background: var(--body);
       border: 1px solid var(--line);
       border-radius: 18px;
       box-shadow: 0 12px 35px rgb(32 52 47 / 6%);
@@ -485,7 +483,7 @@
     .history-scroll { overflow-x: auto; }
     .history-table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
     .history-table th, .history-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
-    .history-table th { color: var(--off-white); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+    .history-table th { color: var(--text); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
     .history-table td { overflow-wrap: anywhere; }
     .history-signature { display: block; width: 110px; height: 42px; object-fit: contain; object-position: left center; }
     .history-actions { display: flex; justify-content: flex-end; margin-top: 16px; }
@@ -493,7 +491,7 @@
     .result-footnote {
       margin: 0;
       padding-top: 15px;
-      color: var(--off-white);
+      color: var(--text);
       border-top: 1px solid var(--line);
       font-size: 11px;
       line-height: 1.5;
@@ -544,7 +542,7 @@
 
     @media print {
       @page { margin: 18mm; }
-      body { min-width: 0; background: var(--black-red); }
+      body { min-width: 0; background: var(--body); }
       .page-shell { width: 100%; padding: 0; }
       .topbar, .intro, .app-card, .result-actions, .history-panel { display: none !important; }
       .result {
@@ -575,7 +573,7 @@
         <button class="secondary-button" id="sign-out-button" type="button">Sign out</button>
       </div>
     </header>
-
+    
     <section class="auth-panel" id="auth-panel" aria-labelledby="auth-title">
       <p class="eyebrow">Representative access</p>
       <h1 id="auth-title">Sign in</h1>
@@ -749,7 +747,7 @@
     const signaturePad = window.CheerSignature.pad;
 
     const recordFields = {
-      organizationName: document.querySelector("#record-organization"),
+       organizationName: document.querySelector("#record-organization"),
       volunteerName: document.querySelector("#record-volunteer"),
       representativeName: document.querySelector("#record-representative"),
       eventName: document.querySelector("#record-event"),
@@ -954,6 +952,7 @@
         signature: signatureCanvas.toDataURL("image/png"),
         submittedAt: new Date().toISOString()
       };
+
       let savedSuccessfully = true;
       try {
         const updatedRecords = [...readSavedRecords(), newRecord];
@@ -964,8 +963,10 @@
         savedSuccessfully = false;
       }
       showHistory(newRecord.volunteerName, savedRecords);
+
       result.hidden = false;
       const historyRange = getHistoryDateRange();
+
       if (!savedSuccessfully) {
         formStatus.textContent = "Record created, but it could not be saved in this browser. Download the history now before leaving this page.";
       } else if (newRecord.eventDate < historyRange.start || newRecord.eventDate > historyRange.end) {
@@ -976,7 +977,20 @@
       result.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
+  const themetoggle = document.getElementById("theme-toggle");
+  const root = document.documentElement;
+
+  themetoggle.addEventListener('click', () => {
+    // Check if dark mode is currently active (either forced or via system)
+    const isDark = root.style.colorScheme === "dark" || 
+      (!root.style.colorScheme && window.matchMedia(("prefers-color-scheme: dark")).matches);
+
+    // Force the opposite scheme
+    root.style.colorScheme = isDark ? "light" : "dark";
+  });
+
     document.querySelector("#print-button").addEventListener("click", () => window.print());
+
     document.querySelector("#download-history-button").addEventListener("click", () => {
       if (!visibleHistoryRecords.length) {
         formStatus.textContent = "There are no saved service events to download for this volunteer.";
@@ -984,6 +998,7 @@
       }
       window.CheerSignature.downloadHistory(visibleHistoryRecords, visibleHistoryName, displayDate, formStatus);
     });
+
     document.querySelector("#edit-button").addEventListener("click", () => {
       result.hidden = true;
       formStatus.textContent = "Service record hidden. Edit the form and create a new record when ready.";
