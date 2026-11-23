@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f6ef">
   <meta name="description" content="Create a printable record of nonprofit volunteer service hours.">
-  <title>CHEER Service Record</title>
+  <title>YOUR_ORGANIZATION Service Recorder</title>
   <style>
     :root {
       color-scheme: light dark;
       --text: light-dark(#000000, #f5f6ef);
-      
+      /*Error colors*/
       --red: light-dark(#de2d2d,#e04f3c);
       --red-dark: light-dark,(#920c0c,#b31010);
       /*Body colors*/
@@ -18,9 +18,9 @@
       --muted: light-dark(#ece7e7,#252222);
       --line: light-dark(#252222,#ccc6c6);
       /*Button, accent colors*/
-      --accent: #66b2b6;
-      --dark-accent: #2e5a89;
-      --orange: #e9a45b;
+      --accent: light-dark(#5a9fa2,#4a8ca3);
+      --accent-dark: light-dark(#2e5a89,#3a6aa3);
+      --orange: light-dark(#d88832,#e9a45b);
       --shadow: 0 24px 70px rgba(223, 241, 255, 0.09);
       font-family: "Segoe UI", "Helvetica Neue", sans-serif;
     }
@@ -231,7 +231,7 @@
     input::placeholder, textarea::placeholder { color: #a4ada5; }
 
     input:focus, select:focus, textarea:focus {
-      border-color: var(--dark-accent);
+      border-color: var(--accent-dark);
       box-shadow: 0 0 0 3px rgba(62, 145, 233, 0.13);
     }
 
@@ -579,9 +579,9 @@
 <body>
   <main class="page-shell">
     <header class="topbar">
-      <a class="brand" href="sfvcheer.org" aria-label="Redirect to CHEER homepage">
-        <img src="https://static.wixstatic.com/media/fb1f48_4e563ef1e9cc41d3b36327a70119552f~mv2.png/v1/fill/w_372,h_322,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/cheer-logo-transparent-padded.png" alt="CHEER logo" width="36" height="36">
-        CHEER Service Record
+      <a class="brand" href="YOUR_ORGANIZATION.org" aria-label="Redirect to YOUR_ORGANIZATION'S homepage">
+        <img src="YOUR_ORGANIZATION_LOGO.png" alt="YOUR_ORGANIZATION logo" width="36" height="36">
+        YOUR_ORGANIZATION Service Record
       </a>
       <div class="theme-toggle-container">
         <button class="tertiary-button" id="theme-toggle" type="button" aria-label="Toggle dark mode">Toggle Theme</button>
@@ -629,7 +629,7 @@
           <div class="fields">
             <div class="field">
               <label for="organization-name">Organization name <span class="required" aria-hidden="true">*</span></label>
-              <input id="organization-name" name="organizationName" type="text" value="CHEER" required maxlength="120">
+              <input id="organization-name" name="organizationName" type="text" required maxlength="120">
             </div>
             <div class="field">
               <label for="representative-name">Representative name <span class="required" aria-hidden="true">*</span></label>
@@ -685,7 +685,7 @@
         </form>
       </div>
       <aside class="side-panel" aria-hidden="true">
-        <p class="side-label">CHEER Service Record</p>
+        <p class="side-label">YOUR_ORGANIZATION Service Record</p>
         <div class="side-bottom">
           <p class="side-caption">A Community for Holistic Education and Empowerment of Civic Responsibility</p>
         </div>
@@ -761,8 +761,8 @@
     const form = document.querySelector("#hours-form");
     const result = document.querySelector("#result");
     const formStatus = document.querySelector("#form-status");
-    const signatureCanvas = window.CheerSignature.canvas;
-    const signaturePad = window.CheerSignature.pad;
+    const signatureCanvas = window.Signature.canvas;
+    const signaturePad = window.Signature.pad;
 
     const recordFields = {
        organizationName: document.querySelector("#record-organization"),
@@ -920,7 +920,7 @@
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       if (!form.reportValidity()) return;
-      if (!window.CheerSignature.hasSignature()) {
+      if (!window.Signature.hasSignature()) {
         signaturePad.setAttribute("aria-invalid", "true");
         signatureCanvas.setAttribute("aria-invalid", "true");
         formStatus.textContent = "Please add the representative's handwritten signature before creating the record.";
@@ -1014,7 +1014,7 @@
         formStatus.textContent = "There are no saved service events to download for this volunteer.";
         return;
       }
-      window.CheerSignature.downloadHistory(visibleHistoryRecords, visibleHistoryName, displayDate, formStatus);
+      window.Signature.downloadHistory(visibleHistoryRecords, visibleHistoryName, displayDate, formStatus);
     });
 
     document.querySelector("#edit-button").addEventListener("click", () => {
