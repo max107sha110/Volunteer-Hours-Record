@@ -1,7 +1,7 @@
 # Volunteer-Hours-Record
 
 ### Purpose
-To simplify the volunteer hours process, this record serves as a web app to track the volunteer hours of volunteers with a one-year maximum history. The app is meant for representatives to use, not the volunteer
+To simplify the volunteer hours process, this record serves as a web app to track the volunteer hours of volunteers with a one-year maximum history. The app is meant for representatives (admin level) to use, not the volunteer.
 
 ## Exporting Records
 The web app allows the representative to download an .xlsx file of the volunteer's history on the "Service history for __" section.
@@ -9,7 +9,7 @@ The web app allows the representative to download an .xlsx file of the volunteer
 The exported .xlsx file shows more recent events first.
 
 ## Login setup
-The app uses Supabase Authentication with email and password. To enable it:
+**Important:** The app uses Supabase Authentication with email and password. To enable it:
 
 1. Create a Supabase project and enable email/password sign-in.
 2. Set the project URL and publishable key (or legacy anon key) in `supabase-config.js`.
@@ -17,3 +17,6 @@ The app uses Supabase Authentication with email and password. To enable it:
 4. Serve the app from an HTTP(S) web server rather than opening `index.html` directly.
 
 The Supabase URL and publishable/anon key are public client settings; never put a Supabase service-role key in this file. Login gates the app interface, but does not secure browser-local data: service records remain in this browser's local storage and are not synced or access-controlled by Supabase. Anyone with access to the same browser profile can access its local data.
+
+## License
+Distributed under the [MIT LICENSE](LICENSE).
