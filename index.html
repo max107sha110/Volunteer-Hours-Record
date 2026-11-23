@@ -295,7 +295,7 @@
       line-height: 1.5;
     }
 
-    .primary-button, .secondary-button {
+    .primary-button, .secondary-button, .tertiary-button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -318,6 +318,29 @@
     .primary-button:active, .secondary-button:active { transform: translateY(1px); }
     .primary-button:disabled { cursor: not-allowed; opacity: .55; }
 
+    .secondary-button {
+          min-height: 38px;
+          padding: 0 13px;
+          color: var(--accent);
+          background: var(--muted);
+          border: 1px solid var(--line);
+          font-size: 12px;
+        }
+
+    .secondary-button:hover { background: #f3f6f1; }
+
+    .tertiary-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 38px;
+      padding: 0 13px;
+      color: var(--accent);
+      background: var(--muted);
+      border: 0;
+      font-size: 12px;
+    }
     .side-panel {
       position: relative;
       display: flex;
@@ -417,16 +440,7 @@
     .result h2 { font-size: 25px; }
     .result-actions { display: flex; flex-wrap: wrap; gap: 9px; }
 
-    .secondary-button {
-      min-height: 38px;
-      padding: 0 13px;
-      color: var(--accent);
-      background: var(--muted);
-      border: 1px solid var(--line);
-      font-size: 12px;
-    }
-
-    .secondary-button:hover { background: #f3f6f1; }
+    
 
     .record-grid {
       display: grid;
@@ -568,12 +582,18 @@
         <img src="https://static.wixstatic.com/media/fb1f48_4e563ef1e9cc41d3b36327a70119552f~mv2.png/v1/fill/w_372,h_322,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/cheer-logo-transparent-padded.png" alt="CHEER logo" width="36" height="36">
         CHEER Service Record
       </a>
+      <div>
+        <button class="tertiary-button" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M10 4.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Zm0-1a6.5 6.5 0 1 1 0 13A6.5 6.5 0 0 1 10 3.5Z" fill="currentColor"/>
+          </svg>
+      </div>
       <div class="account-actions" id="account-actions" hidden>
         <span class="account-email" id="account-email"></span>
         <button class="secondary-button" id="sign-out-button" type="button">Sign out</button>
       </div>
     </header>
-    
+
     <section class="auth-panel" id="auth-panel" aria-labelledby="auth-title">
       <p class="eyebrow">Representative access</p>
       <h1 id="auth-title">Sign in</h1>
