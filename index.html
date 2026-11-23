@@ -330,10 +330,6 @@
     .secondary-button:hover { background: #f3f6f1; }
 
     .tertiary-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
       min-height: 38px;
       padding: 0 13px;
       color: var(--accent);
@@ -341,6 +337,7 @@
       border: 0;
       font-size: 12px;
     }
+
     .side-panel {
       position: relative;
       display: flex;
@@ -583,10 +580,7 @@
         CHEER Service Record
       </a>
       <div>
-        <button class="tertiary-button" id="theme-toggle" type="button" aria-label="Toggle dark mode">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M10 4.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Zm0-1a6.5 6.5 0 1 1 0 13A6.5 6.5 0 0 1 10 3.5Z" fill="currentColor"/>
-          </svg>
+        <button class="tertiary-button" id="theme-toggle" type="button" aria-label="Toggle dark mode">Toggle Theme</button>
       </div>
       <div class="account-actions" id="account-actions" hidden>
         <span class="account-email" id="account-email"></span>
