@@ -1,7 +1,7 @@
 # Volunteer-Hours-Record
 
 ### Purpose
-To simplify the volunteer hours process, this record serves as a web app to track the volunteer hours of volunteers with a one-year maximum history. The app is meant for representatives (admin level) to use, not the volunteer.
+To simplify the volunteer hours process, this record serves as a web app to track the volunteer hours of volunteers with a one-year maximum (default; can be changed) history. The app is meant for representatives (admin level) to use, not the volunteer.
 
 ## Exporting Records
 The web app allows the representative to download an .xlsx file of the volunteer's history on the "Service history for __" section.
