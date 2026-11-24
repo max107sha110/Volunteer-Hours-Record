@@ -12,6 +12,7 @@
   const supabaseModeStatus = document.querySelector("#supabase-mode-status");
   const accountActions = document.querySelector("#account-actions");
   const accountEmail = document.querySelector("#account-email");
+  const signOutButton = document.querySelector("#sign-out-button");
   const supabaseModeStorageKey = "volunteer-hours-supabase-mode";
 
   // Track authentication mode and password recovery state.
@@ -64,11 +65,12 @@
   }
 
   function showWorkspace(user) {
-    const signedIn = Boolean(user);
+    const signedIn = Boolean(user) || testMode;
     authPanel.hidden = signedIn;
     workspace.hidden = !signedIn;
     accountActions.hidden = !signedIn;
-    accountEmail.textContent = signedIn ? user.email || "Signed in" : "";
+    accountEmail.textContent = testMode ? "Test mode (login skipped)" : signedIn ? user.email || "Signed in" : "";
+    signOutButton.hidden = testMode;
     if (signedIn) {
       requestAnimationFrame(() => window.CheerSignature?.resize());
     } else {
@@ -77,15 +79,17 @@
   }
 
   updateAuthForm();
-  supabaseModeStatus.textContent = `Current Supabase configuration: ${testMode ? "Test" : "Live"}.`;
+  supabaseModeStatus.textContent = testMode ? "TEST MODE — login skipped" : "";
+  supabaseModeStatus.hidden = !testMode;
   if (supabaseModeReadError) {
     supabaseModeStatus.textContent = `Could not read Supabase mode: ${supabaseModeReadError.message}`;
+    supabaseModeStatus.hidden = false;
   }
-  supabaseModeButton.textContent = testMode ? "Use live configuration" : "Use test configuration";
-  const supabaseConfig = testMode
-    ? window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.test
-    : window.SUPABASE_CONFIG;
-  if (!window.supabase) {
+  supabaseModeButton.textContent = testMode ? "Exit test mode" : "Test mode (skip login)";
+  const supabaseConfig = window.SUPABASE_CONFIG;
+  if (testMode) {
+    showWorkspace(null);
+  } else if (!window.supabase) {
     authSubmitButton.disabled = true;
     authModeButton.disabled = true;
     resetPasswordButton.disabled = true;
@@ -141,7 +145,8 @@
       window.localStorage.setItem(supabaseModeStorageKey, testMode ? "live" : "test");
       window.location.reload();
     } catch (error) {
-      setAuthMessage(`Could not switch Supabase configuration: ${error.message}`, true);
+      supabaseModeStatus.textContent = `Could not switch modes: ${error.message}`;
+      supabaseModeStatus.hidden = false;
     }
   });
 

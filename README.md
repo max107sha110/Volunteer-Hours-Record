@@ -16,7 +16,7 @@ The exported .xlsx file shows more recent events first.
 3. Set the Supabase project's Site URL to where this app is hosted and add that URL to its allowed redirect URLs. Password reset links redirect back to the app.
 4. Serve the app from an HTTP(S) web server rather than opening `index.html` directly.
 
-For testing, create a separate Supabase project and set its URL and publishable/anon key in the `test` section of `supabase-config.js`. Use the **Use test configuration** button on the sign-in screen to switch projects; the selection is saved in this browser and takes effect after the page reloads. The button switches back to the live configuration. Keep test and live projects separate to avoid using production accounts while testing.
+For local testing, use the **Test mode (skip login)** button in the header to open the app without connecting to Supabase. The selection is saved in this browser and takes effect after the page reloads; use **Exit test mode** to return to normal sign-in. Test mode bypasses the login gate, so do not deploy the app with test mode enabled or use it to protect sensitive data.
 
 The Supabase URL and publishable/anon key are public client settings; never put a Supabase service-role key in this file. Login gates the app interface, but does not secure browser-local data: service records remain in this browser's local storage and are not synced or access-controlled by Supabase. Anyone with access to the same browser profile can access its local data.
 
