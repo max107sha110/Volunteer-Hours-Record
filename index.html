@@ -9,22 +9,55 @@
   <style>
     :root {
       color-scheme: light dark;
-      --text: light-dark(#000000, #f5f6ef);
+      --text: #000000;
       /*Error colors*/
-      --red: light-dark(#de2d2d,#e04f3c);
-      --red-dark: light-dark,(#920c0c,#b31010);
+      --red: #de2d2d;
+      --red-dark: #920c0c;
       /*Body colors*/
-      --body: light-dark(#f5f6ef,#160000);
-      --muted: light-dark(#ece7e7,#252222);
-      --line: light-dark(#252222,#ccc6c6);
+      --body: #f5f6ef;
+      --muted: #ece7e7;
+      --line: #252222;
       /*Button, accent colors*/
-      --accent: light-dark(#5a9fa2,#4a8ca3);
-      --accent-dark: light-dark(#2e5a89,#3a6aa3);
-      --orange: light-dark(#d88832,#e9a45b);
+      --accent: #5a9fa2;
+      --accent-dark: #2e5a89;
+      --orange: #d88832;
+      --background-glow: rgba(48, 45, 45, 0.12);
 
       --gray: #888888;
       --shadow: 0 24px 70px rgba(223, 241, 255, 0.09);
       font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    }
+
+    :root[data-theme="light"] { color-scheme: light; }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --text: #f5f6ef;
+      --red: #e04f3c;
+      --red-dark: #b31010;
+      --body: #160000;
+      --muted: #252222;
+      --line: #ccc6c6;
+      --accent: #4a8ca3;
+      --accent-dark: #3a6aa3;
+      --orange: #e9a45b;
+      --background-glow: rgba(48, 45, 45, 0.7);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme]) {
+        color-scheme: dark;
+        --text: #f5f6ef;
+        --red: #e04f3c;
+        --red-dark: #b31010;
+        --body: #160000;
+        --muted: #252222;
+        --line: #ccc6c6;
+        --accent: #4a8ca3;
+        --accent-dark: #3a6aa3;
+        --orange: #e9a45b;
+        --background-glow: rgba(48, 45, 45, 0.7);
+      }
     }
 
     * { box-sizing: border-box; }
@@ -35,7 +68,7 @@
       margin: 0;
       color: var(--text);
       background:
-        radial-gradient(ellipse at 9% 12%, rgba(48, 45, 45, 0.7), transparent 29rem),
+        radial-gradient(ellipse at 9% 12%, var(--background-glow), transparent 29rem),
         var(--body);
     }
 
@@ -1009,17 +1042,26 @@
       result.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
-  const themetoggle = document.getElementById("theme-toggle");
+  const themeToggle = document.getElementById("theme-toggle");
   const root = document.documentElement;
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 
-  themetoggle.addEventListener('click', () => {
-    // Check if dark mode is currently active (either forced or via system)
-    const isDark = root.style.colorScheme === "dark" || 
-      (!root.style.colorScheme && window.matchMedia(("prefers-color-scheme: dark")).matches);
+  function getCurrentTheme() {
+    return root.dataset.theme || (prefersDark.matches ? "dark" : "light");
+  }
 
-    // Force the opposite scheme
-    root.style.colorScheme = isDark ? "light" : "dark";
+  function updateThemeToggle() {
+    const nextTheme = getCurrentTheme() === "dark" ? "light" : "dark";
+    themeToggle.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
+    document.querySelector('meta[name="theme-color"]').content =
+      getCurrentTheme() === "dark" ? "#160000" : "#f5f6ef";
+  }
+
+  themeToggle.addEventListener("click", () => {
+    root.dataset.theme = getCurrentTheme() === "dark" ? "light" : "dark";
+    updateThemeToggle();
   });
+  updateThemeToggle();
 
     document.querySelector("#print-button").addEventListener("click", () => window.print());
 
