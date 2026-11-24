@@ -8,13 +8,24 @@
   const authSubmitButton = document.querySelector("#auth-submit-button");
   const authModeButton = document.querySelector("#auth-mode-button");
   const resetPasswordButton = document.querySelector("#reset-password-button");
+  const supabaseModeButton = document.querySelector("#supabase-mode-button");
+  const supabaseModeStatus = document.querySelector("#supabase-mode-status");
   const accountActions = document.querySelector("#account-actions");
   const accountEmail = document.querySelector("#account-email");
+  const supabaseModeStorageKey = "volunteer-hours-supabase-mode";
 
   // Track authentication mode and password recovery state.
   let authMode = "sign-in";
   let recoveryMode = window.location.hash.includes("type=recovery");
   let supabaseClient;
+  let testMode = false;
+  let supabaseModeReadError;
+
+  try {
+    testMode = window.localStorage.getItem(supabaseModeStorageKey) === "test";
+  } catch (error) {
+    supabaseModeReadError = error;
+  }
 
   // Update the accessible status message shown to the user.
   function setAuthMessage(message, isError = false) {
@@ -66,20 +77,30 @@
   }
 
   updateAuthForm();
-  const supabaseConfig = window.SUPABASE_CONFIG;
+  supabaseModeStatus.textContent = `Current Supabase configuration: ${testMode ? "Test" : "Live"}.`;
+  if (supabaseModeReadError) {
+    supabaseModeStatus.textContent = `Could not read Supabase mode: ${supabaseModeReadError.message}`;
+  }
+  supabaseModeButton.textContent = testMode ? "Use live configuration" : "Use test configuration";
+  const supabaseConfig = testMode
+    ? window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.test
+    : window.SUPABASE_CONFIG;
   if (!window.supabase) {
     authSubmitButton.disabled = true;
     authModeButton.disabled = true;
     resetPasswordButton.disabled = true;
     setAuthMessage("The Supabase client could not be loaded. Check your internet connection and reload.", true);
   } else if (!supabaseConfig ||
-      !/^https:\/\/[^/]+\/?$/.test(supabaseConfig.url || "") ||
+      typeof supabaseConfig.url !== "string" ||
+      !/^https:\/\/[^/]+\/?$/.test(supabaseConfig.url) ||
+      supabaseConfig.url.includes("YOUR_") ||
+      typeof supabaseConfig.anonKey !== "string" ||
       !supabaseConfig.anonKey ||
-      supabaseConfig.anonKey === "YOUR_SUPABASE_ANON_KEY") {
+      supabaseConfig.anonKey.startsWith("YOUR_")) {
     authSubmitButton.disabled = true;
     authModeButton.disabled = true;
     resetPasswordButton.disabled = true;
-    setAuthMessage("Authentication is not configured. Set your Supabase project URL and anon key in supabase-config.js.", true);
+    setAuthMessage(`Authentication is not configured for ${testMode ? "test" : "live"} mode. Set its Supabase project URL and anon key in supabase-config.js.`, true);
   } else {
     const supabaseUrl = supabaseConfig.url.replace(/\/$/, "");
     supabaseClient = window.supabase.createClient(supabaseUrl, supabaseConfig.anonKey);
@@ -113,6 +134,15 @@
     authMode = authMode === "sign-in" ? "sign-up" : "sign-in";
     setAuthMessage("");
     updateAuthForm();
+  });
+
+  supabaseModeButton.addEventListener("click", () => {
+    try {
+      window.localStorage.setItem(supabaseModeStorageKey, testMode ? "live" : "test");
+      window.location.reload();
+    } catch (error) {
+      setAuthMessage(`Could not switch Supabase configuration: ${error.message}`, true);
+    }
   });
 
   authForm.addEventListener("submit", async (event) => {
