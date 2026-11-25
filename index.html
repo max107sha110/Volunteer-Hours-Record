@@ -804,8 +804,8 @@
     const form = document.querySelector("#hours-form");
     const result = document.querySelector("#result");
     const formStatus = document.querySelector("#form-status");
-    const signatureCanvas = window.Signature.canvas;
-    const signaturePad = window.Signature.pad;
+    const signatureCanvas = window.CheerSignature.canvas;
+    const signaturePad = window.CheerSignature.pad;
 
     const recordFields = {
        organizationName: document.querySelector("#record-organization"),
@@ -967,7 +967,7 @@
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       if (!form.reportValidity()) return;
-      if (!window.Signature.hasSignature()) {
+      if (!window.CheerSignature.hasSignature()) {
         signaturePad.setAttribute("aria-invalid", "true");
         signatureCanvas.setAttribute("aria-invalid", "true");
         formStatus.textContent = "Please add the representative's handwritten signature before creating the record.";
@@ -1070,7 +1070,7 @@
         formStatus.textContent = "There are no saved service events to download for this volunteer.";
         return;
       }
-      window.Signature.downloadHistory(visibleHistoryRecords, visibleHistoryName, displayDate, formStatus);
+      window.CheerSignature.downloadHistory(visibleHistoryRecords, visibleHistoryName, displayDate, formStatus);
     });
 
     document.querySelector("#edit-button").addEventListener("click", () => {
