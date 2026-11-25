@@ -69,7 +69,7 @@
     authPanel.hidden = signedIn;
     workspace.hidden = !signedIn;
     accountActions.hidden = !signedIn;
-    accountEmail.textContent = (testMode ? "Test mode (login skipped)" : signedIn) ? user.email || "Signed in" : "";
+    accountEmail.textContent = testMode ? "Test mode (login skipped)" : signedIn ? user.email || "Signed in" : "";
     signOutButton.hidden = testMode;
     if (signedIn) {
       requestAnimationFrame(() => window.CheerSignature?.resize());
