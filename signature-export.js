@@ -12,13 +12,13 @@
     return getComputedStyle(document.documentElement).getPropertyValue("--text").trim();
   }
 
-  function drawStrokes(targetContext, color = getStrokeColor()) {
-    targetContext.strokeStyle = color;
+  function drawStrokes(targetContext, color) {
     for (const stroke of strokes) {
-      if (!stroke.length) continue;
+      if (!stroke.points.length) continue;
+      targetContext.strokeStyle = color || stroke.color;
       targetContext.beginPath();
-      targetContext.moveTo(stroke[0].x, stroke[0].y);
-      for (const point of stroke.slice(1)) {
+      targetContext.moveTo(stroke.points[0].x, stroke.points[0].y);
+      for (const point of stroke.points.slice(1)) {
         targetContext.lineTo(point.x, point.y);
       }
       targetContext.stroke();
@@ -54,8 +54,12 @@
     canvas.setPointerCapture(event.pointerId);
     const point = signaturePoint(event);
     isDrawing = true;
-    currentStroke = [point, { x: point.x + 0.1, y: point.y + 0.1 }];
+    currentStroke = {
+      color: getStrokeColor(),
+      points: [point, { x: point.x + 0.1, y: point.y + 0.1 }]
+    };
     strokes.push(currentStroke);
+    context.strokeStyle = currentStroke.color;
     context.beginPath();
     context.moveTo(point.x, point.y);
     context.lineTo(point.x + 0.1, point.y + 0.1);
@@ -68,7 +72,7 @@
   canvas.addEventListener("pointermove", (event) => {
     if (!isDrawing) return;
     const point = signaturePoint(event);
-    currentStroke.push(point);
+    currentStroke.points.push(point);
     context.lineTo(point.x, point.y);
     context.stroke();
   });
@@ -90,10 +94,6 @@
     canvas.setAttribute("aria-invalid", "false");
     document.querySelector("#form-status").textContent = "Signature cleared.";
   });
-
-  const themeObserver = new MutationObserver(redraw);
-  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", redraw);
 
   function toBlackDataURL() {
     const bounds = canvas.getBoundingClientRect();
