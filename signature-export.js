@@ -5,6 +5,30 @@
   const context = canvas.getContext("2d");
   let hasSignature = false;
   let isDrawing = false;
+  let strokes = [];
+  let currentStroke;
+
+  function getStrokeColor() {
+    return getComputedStyle(document.documentElement).getPropertyValue("--text").trim();
+  }
+
+  function drawStrokes(targetContext, color = getStrokeColor()) {
+    targetContext.strokeStyle = color;
+    for (const stroke of strokes) {
+      if (!stroke.length) continue;
+      targetContext.beginPath();
+      targetContext.moveTo(stroke[0].x, stroke[0].y);
+      for (const point of stroke.slice(1)) {
+        targetContext.lineTo(point.x, point.y);
+      }
+      targetContext.stroke();
+    }
+  }
+
+  function redraw() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    drawStrokes(context);
+  }
 
   // Resize the canvas for high-DPI screens while preserving its drawing style.
   function resize() {
@@ -13,10 +37,10 @@
     canvas.width = Math.round(bounds.width * pixelRatio);
     canvas.height = Math.round(bounds.height * pixelRatio);
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    context.strokeStyle = "#006de1";
     context.lineWidth = 2.4;
     context.lineCap = "round";
     context.lineJoin = "round";
+    redraw();
   }
 
   // Convert pointer coordinates from the viewport to canvas space.
@@ -30,6 +54,8 @@
     canvas.setPointerCapture(event.pointerId);
     const point = signaturePoint(event);
     isDrawing = true;
+    currentStroke = [point, { x: point.x + 0.1, y: point.y + 0.1 }];
+    strokes.push(currentStroke);
     context.beginPath();
     context.moveTo(point.x, point.y);
     context.lineTo(point.x + 0.1, point.y + 0.1);
@@ -42,12 +68,14 @@
   canvas.addEventListener("pointermove", (event) => {
     if (!isDrawing) return;
     const point = signaturePoint(event);
+    currentStroke.push(point);
     context.lineTo(point.x, point.y);
     context.stroke();
   });
 
   function endSignature() {
     isDrawing = false;
+    currentStroke = undefined;
   }
 
   canvas.addEventListener("pointerup", endSignature);
@@ -55,12 +83,32 @@
   canvas.addEventListener("lostpointercapture", endSignature);
 
   document.querySelector("#clear-signature").addEventListener("click", () => {
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    strokes = [];
+    redraw();
     hasSignature = false;
     pad.setAttribute("aria-invalid", "false");
     canvas.setAttribute("aria-invalid", "false");
     document.querySelector("#form-status").textContent = "Signature cleared.";
   });
+
+  const themeObserver = new MutationObserver(redraw);
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", redraw);
+
+  function toBlackDataURL() {
+    const bounds = canvas.getBoundingClientRect();
+    const pixelRatio = canvas.width / Math.max(bounds.width, 1);
+    const exportCanvas = document.createElement("canvas");
+    exportCanvas.width = canvas.width;
+    exportCanvas.height = canvas.height;
+    const exportContext = exportCanvas.getContext("2d");
+    exportContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    exportContext.lineWidth = 2.4;
+    exportContext.lineCap = "round";
+    exportContext.lineJoin = "round";
+    drawStrokes(exportContext, "#000000");
+    return exportCanvas.toDataURL("image/png");
+  }
 
   // Build and download an XLSX package containing history rows and signature images.
   function downloadHistory(records, volunteerName, displayDate, formStatus) {
@@ -200,6 +248,7 @@
     pad,
     context,
     resize,
+    toBlackDataURL,
     hasSignature: () => hasSignature,
     downloadHistory
   };

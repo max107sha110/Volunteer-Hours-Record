@@ -1000,7 +1000,8 @@
         recordFields.serviceNotes.textContent = "No additional notes recorded.";
       }
 
-      document.querySelector("#record-signature").src = signatureCanvas.toDataURL("image/png");
+      const signatureImage = window.CheerSignature.toBlackDataURL();
+      document.querySelector("#record-signature").src = signatureImage;
       const newRecord = {
         organizationName: safeText(values.get("organizationName")),
         volunteerName: safeText(values.get("volunteerName")),
@@ -1014,7 +1015,7 @@
         serviceNotes: safeText(values.get("serviceNotes")) === "—"
           ? "No additional notes recorded."
           : safeText(values.get("serviceNotes")),
-        signature: signatureCanvas.toDataURL("image/png"),
+        signature: signatureImage,
         submittedAt: new Date().toISOString()
       };
 
