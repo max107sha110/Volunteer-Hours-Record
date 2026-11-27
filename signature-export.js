@@ -8,6 +8,7 @@
   let strokes = [];
   let currentStroke;
 
+  // adapts signature color based on theme
   function getStrokeColor() {
     return getComputedStyle(document.documentElement).getPropertyValue("--text").trim();
   }
@@ -95,6 +96,7 @@
     document.querySelector("#form-status").textContent = "Signature cleared.";
   });
 
+  // Changes signature image for exportability
   function toBlackDataURL() {
     const bounds = canvas.getBoundingClientRect();
     const pixelRatio = canvas.width / Math.max(bounds.width, 1);
