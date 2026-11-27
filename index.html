@@ -822,13 +822,18 @@
   <script src="supabase-auth.js"></script>
   <script src="signature-export.js"></script>
   <script>
+
+
     // Cache the main form and result elements used throughout this script.
     const form = document.querySelector("#hours-form");
     const result = document.querySelector("#result");
     const formStatus = document.querySelector("#form-status");
     const signatureCanvas = window.CheerSignature.canvas;
     const signaturePad = window.CheerSignature.pad;
-
+    const themeToggle = document.getElementById("theme-toggle");
+    const root = document.documentElement;
+    const validThemes = ["light", "dark"];
+    
     const recordFields = {
        organizationName: document.querySelector("#record-organization"),
       volunteerName: document.querySelector("#record-volunteer"),
@@ -839,6 +844,36 @@
       hours: document.querySelector("#record-hours"),
       serviceNotes: document.querySelector("#record-notes")
     };
+    
+
+    let savedTheme = null;
+    try {
+      savedTheme = localStorage.getItem("theme");
+    } catch (error) {
+      // Storage may be unavailable; fall back to system preference
+    }
+
+    const initialTheme = validThemes.includes(savedTheme) ? 
+      savedTheme : (window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light");
+    const setTheme = (theme) => {
+      root.dataset.theme = theme;
+      themeToggle.textContext = `Switch to ${theme === "dark" ? "light" : "dark"} mode`;
+      themeToggle.setAttribute("aria-label", `Switch to ${theme === "dark" ? "light" : "dark"} mode`);
+      themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
+    };
+
+    setTheme(initialTheme);
+
+    themeToggle.addEventListener("click", () => {
+      const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+      setTheme(nextTheme);
+      try {
+        localStorage.setItem("theme", nextTheme);
+      } catch (error) {
+        // The selected theme remains active for this page even if it cannot be saved.
+      }
+    });
+
 
     const formatHours = (value) => {
       const hours = Number(value);
@@ -1097,26 +1132,6 @@
       result.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
-  const themeToggle = document.getElementById("theme-toggle");
-  const root = document.documentElement;
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-
-  function getCurrentTheme() {
-    return root.dataset.theme || (prefersDark.matches ? "dark" : "light");
-  }
-
-  function updateThemeToggle() {
-    const nextTheme = getCurrentTheme() === "dark" ? "light" : "dark";
-    themeToggle.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
-    document.querySelector('meta[name="theme-color"]').content =
-      getCurrentTheme() === "dark" ? "#160000" : "#f5f6ef";
-  }
-
-  themeToggle.addEventListener("click", () => {
-    root.dataset.theme = getCurrentTheme() === "dark" ? "light" : "dark";
-    updateThemeToggle();
-  });
-  updateThemeToggle();
 
     document.querySelector("#print-button").addEventListener("click", () => window.print());
 
