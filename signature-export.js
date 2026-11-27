@@ -96,7 +96,7 @@
     document.querySelector("#form-status").textContent = "Signature cleared.";
   });
 
-  // changes signature image to a url
+  // Changes signature image for exportability
   function toBlackDataURL() {
     const bounds = canvas.getBoundingClientRect();
     const pixelRatio = canvas.width / Math.max(bounds.width, 1);
